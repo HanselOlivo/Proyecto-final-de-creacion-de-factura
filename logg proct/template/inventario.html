@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <title>Inventario</title>
+    <link rel="icon" href="../static/img/image.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        /* Tabla */
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            overflow-y: auto;
+            max-height: 200px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .red {
+            padding: 10px;
+            text-align: center;
+            color: red;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            border-bottom: 2px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .Borrar {
+            background-color: rgb(241, 50, 50);
+        }
+
+        .Borrar:hover {
+            background-color: rgb(207, 66, 66);
+        }
+
+        .Buscar {
+            background-color: rgb(50, 50, 243);
+        }
+
+        .Buscar:hover {
+            background-color: rgb(40, 40, 179);
+        }
+
+        .Stock {
+            background-color: rgb(153, 0, 153);
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Articulo */
+
+        main {
+            width: 90%;
+            margin-top: 10%;
+            margin-left: 70px;
+            padding: 20px;
+            transition: all 300ms;
+        }
+
+        .main-move {
+            left: 250px;
+        }
+
+        article h1 {
+            color: #fff;
+            font-size: 40px;
+        }
+
+        article p {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: 100;
+        }
+
+        /* Modal */
+        #removed_item {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+
+        #loginModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        #loginModal-1 {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        #loginModal-reabastecer {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 8px;
+        }
+
+        .modal-content1 {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: -10px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .close-1 {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: -10px;
+        }
+
+        .close-1:hover,
+        .close-1:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .close-reabastecer {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: -10px;
+        }
+
+        .close-reabastecer:hover,
+        .close-reabastecer:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        h2 {
+            margin-bottom: 9px;
+            margin-top: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        button[type="submit"] {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        img {
+            max-width: 70px;
+            max-height: 70px;
+        }
+
+        /* Select */
+
+        select#categorias {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        select#categorias option {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #dataTable tbody {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        #dataTable tbody::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #dataTable tbody::-webkit-scrollbar-thumb {
+            background-color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    {% include("home2.html") %}
+
+    <main>
+        <article>
+            <h1>Articulos en Inventario</h1>
+            <table>
+                <tr>
+                    <th>Image</th>
+                    <th>Articulo</th>
+                    <th>Precio</th>
+                    <th>Itbis</th>
+                    <th>Cantidad</th>
+                    <th>Operaciones</th>
+                </tr>
+                {% if datos %}
+                    {% for fila in datos %}
+                    <tr>
+                        <td><img src="{{ url_for('static', filename='uploads/' + fila['img']) }}" alt="{{ fila['img'] }}"></td>
+                        <td>{{ fila['descripcion'] }}</td>
+                        <td>{{ fila['precio'] }}$</td>
+                        <td>{{ fila['itbis'] }}%</td>
+                        {% if fila['cantidad'] < 6 %}
+                            <td class="red">{{ fila['cantidad'] }}</td>
+                        {% else %}
+                            <td>{{ fila['cantidad'] }}</td>
+                        {% endif %}
+                        <td>
+                            <a href="/edit/{{ fila['id'] }}"><button id="edit">Editar</button></a>
+                            <a href="/remove_art/{{ fila['id'] }}"><button id="remove" class="Borrar">Borrar</button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="div">
+                                <p>No hay productos</p>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+            <table>
+                <tr>
+                    <th><button id="loginBtn" class="Agregar">Agregar Articulo</button></th>
+                    <th><button class="Stock">Actualizar Stock de Articulo</button></th>
+                    <th><button class="Buscar" id="SearchBtn">Buscar Articulo por Nombre</button></th>
+                </tr>
+            </table>
+        </article>
+    </main>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Agregar Articulo</h2>
+          <form id="Formulario" method="post" action="{{ url_for('add_article') }}" enctype="multipart/form-data">
+            <input type="text" id="art_name" name="art_name" placeholder="Nombre del artículo" required>
+            <input type="number" step="any" id="art_precio" name="art_precio" placeholder="Precio del artículo" required>
+            <input type="number" step="any" id="art_itbis" name="art_itbis" placeholder="Impuesto (%)" required>
+            <input type="number" step="any" id="art_cantidad" name="art_cantidad" placeholder="Ingrese la cantidad del artículo" required>
+            <input type="file" name="image" accept="image/*" required>
+            <button type="button" id="agregar">Agregar</button>
+          </form>
+        </div>
+    </div>
+
+    <div id="loginModal-1" class="modal">
+        <div class="modal-content1">
+            <span class="close-1">&times;</span>
+            <h2>Search Products</h2>
+            <input type="text" id="searchInput" name="busqueda" placeholder="Buscar...">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Articulo</th>
+                        <th>Precio</th>
+                        <th>Itbis</th>
+                        <th>Cantidad</th>
+                        <th>Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody id="searchResults"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/buscador.js') }}"></script>
+    <script>
+
+        document.getElementById('agregar').onclick = function() {
+            event.preventDefault();
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Se agrego el producto con exito",
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                document.getElementById('Formulario').submit();
+            });
+        }
+
+        const botonesBorrar = document.querySelectorAll('.Borrar');
+
+        botonesBorrar.forEach(boton => {
+            boton.onclick = function(event) {
+                event.preventDefault();
+
+                var productoId = boton.parentElement.getAttribute("href").split("/").pop();
+                console.log(productoId); 
+                const url = "/remove_art/" + productoId;
+
+                Swal.fire({
+                    title: "¿Quieres eliminar este producto?",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Eliminar",
+                    denyButtonText: `No Eliminar`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Eliminando",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        }).then(() => {
+                            fetch(url, {
+                                method: 'DELETE'
+                            }).then(response => {
+                                if (response.ok) {
+                                    window.location.reload();
+                                } else {
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "No se pudo eliminar el producto.",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            title: "No se elimino",
+                            icon: "error",
+                            showCancelButton: false,
+                        })
+                    }
+                });
+            };
+        });
+
+        $('.lnr-menu').on('click', function() {
+            $('.menu').toggleClass("menu-show");
+            $('main').toggleClass("main-move")
+        });
+
+        var modal = document.getElementById('loginModal');
+        var btn = document.getElementById("loginBtn");
+        var span = document.getElementsByClassName("close")[0];
+      
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+      
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+      
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        var modal_search = document.getElementById('loginModal-1');
+        var btn_search = document.getElementById("SearchBtn");
+        var span_search = document.getElementsByClassName("close-1")[0];
+      
+        btn_search.onclick = function() {
+            modal_search.style.display = "block";
+        }
+      
+        span_search.onclick = function() {
+            modal_search.style.display = "none";
+        }
+      
+        window.onclick = function(event) {
+          if (event.target == modal_search) {
+            modal_search.style.display = "none";
+          }
+        }
+
+
+        // Realiza la búsqueda en tiempo real
+        $(document).ready(function(){
+            $('#busqueda').on('input', function(){
+                var query = $(this).val();
+                $.ajax({
+                    url: '/buscar',
+                    method: 'POST',
+                    data: {query: query},
+                    success: function(response){
+                        $('#resultados').empty();
+                        response.forEach(function(resultado){
+                            $('#resultados').append('<li>' + resultado + '</li>');
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

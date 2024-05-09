@@ -1,0 +1,74 @@
+{% include("home.html") %}
+
+<style>
+  .center {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .user-box {
+    width: 500px;
+    margin: 0px auto;
+    margin-top: 12rem;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .user-box h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .user-box table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  .user-box th, .user-box td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .user-box th {
+    background-color: #f2f2f2;
+  }
+
+  .user-box p {
+    color: #666;
+  }
+</style>
+
+<div class="center">
+  <div class="user-box">
+    <h1>Admin List</h1>
+
+    {% if admin %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">N</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Password</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for show in admin %}
+        <tr>
+          <th scope="row">{{ show.id }}</th>
+          <td>{{ show.correo }}</td>
+          <td>{{ show.password }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% else %}
+    <p>There is no corresponding data.</p>
+    {% endif %}
+  </div>
+</div>

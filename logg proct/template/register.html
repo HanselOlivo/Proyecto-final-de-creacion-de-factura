@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login2.0.css') }}">
+</head>
+<body>
+  <div id="login-container">
+    <h1>Register</h1>
+    <form action="{{ url_for('create_register') }}" method="post">
+      <label for="email">E-mail:</label>
+      <input type="email" class="form-control login__input" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su Correo" name="txtCorreo">
+      <label for="password">password:</label>
+      <input type="password" name="password" id="password" placeholder="Enter your password">
+      <input type="submit" value="Register">
+    </form>
+    <div id="register-container">
+      <p>Tienes cuenta?</p>
+      <a href="/login">login</a>
+    </div>
+  </div>
+</body>
+</html>

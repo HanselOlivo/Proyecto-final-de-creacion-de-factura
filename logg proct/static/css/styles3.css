@@ -1,0 +1,147 @@
+
+  .container-btn {
+    padding: 20px;
+    margin: auto 6%;
+    text-align: right;
+    margin-top: 10px;
+  }
+  .container-btn button{
+    position: relative;
+    font-size: 20px;
+    border: #fcfcfc 2px solid;
+  }
+  #cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 12px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .product-card {
+    width: 300px;
+    margin: 26px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .product-card img {
+    max-width: 100%;
+    height: auto;
+  }
+  .price {      color: darkblue;       }
+
+  .product-card button {
+    background-color: darkblue;
+    color: #fff;
+  }
+  
+  .cart {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 450px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    display: none;
+  }
+  
+  .cart h2 {
+    margin-bottom: 20px;
+  }
+  
+  .cart-buttons {
+    display: flex;
+    justify-content: space-between; /* Coloca los botones en los extremos */
+  }
+  
+  button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cart-buttons button:nth-child(1) {
+    background-color: #f44336; /* Estilo del primer botón */
+    color: #fff;
+  }
+  
+  .cart-buttons button:nth-child(2) {
+    background-color: #4CAF50; /* Estilo del segundo botón */
+    color: #fff;
+  }
+  
+  .cart-buttons button:hover {
+    opacity: 0.8;
+  }
+
+
+
+.cart-item{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.cart-item img{
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.btn-remove{
+    display: flex;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f44336;
+    cursor: pointer;
+}
+
+.btn-remove button {
+    border: none;
+    font-weight: bold;
+    background-color: #f44336;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 767px) {
+    .cart {
+      width: 94%;
+      padding: 10px;
+    }
+    
+    .btn-remove{
+      width: 15px;
+      height: 3vh;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-remove button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }

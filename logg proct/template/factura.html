@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Factura</title>
+    <script src="https://kit.fontawesome.com/5ef1b31399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        
+        .container {
+            width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 150px;
+            height: auto;
+        }
+        
+        .print-icon {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            background-image: url('https://image.flaticon.com/icons/png/512/1629/1629301.png');
+            background-size: cover;
+            cursor: pointer;
+            top: 10px;
+            right: -90rem;
+            position: relative;
+        }
+        
+        .info-section {
+            margin-bottom: 20px;
+        }
+        
+        .info-section p {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        
+        .info-section h2 {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .empresa {
+            margin-bottom: 40px;
+            margin-top: -20px;
+            margin-left: 50px;
+        }
+
+        .empresa p {
+            margin: 5px 0;
+            font-size: 9px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #bebebe;
+        }
+        
+        tfoot th {
+            text-align: right;
+        }
+        
+        .note {
+            font-style: italic;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .title {
+            position: absolute;
+            top: 10px;
+            right: 65px;
+            font-size: 12px;
+        }
+
+        .date {
+            position: absolute;
+            top: 45px;
+            right: 20px;
+            font-size: 12px;
+        }
+
+        .duedate {
+            position: absolute;
+            top: 65px;
+            right: 20px;
+            font-size: 12px;
+        }
+
+        .back {
+            font-size: 20px;
+            position: relative;
+            top: 10px;
+            left: 10px;
+            color: rgb(0, 0, 0);
+            border: 1px solid transparent;
+            transition: all 300ms;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        .derecha {
+            position: relative;
+            float: right;
+            margin-right: 60px;
+            top: 150px;
+            clear: both;
+            border-top: 1px solid black;
+            padding-bottom: 5px;
+        }
+
+        .izquierda {
+            position: absolute;
+            float: left;
+            margin-left: 60px;
+            clear: both;
+            border-top: 1px solid black;
+            padding-bottom: 5px;
+        }
+
+        .nota {
+            margin-top: 60px;
+        }
+
+        .img {
+            width: 170px;
+            height: 170px;
+        }
+
+        .sello {
+            position: absolute;
+            left: 30px;
+            bottom: 90px;
+        }
+
+        .firma {
+            margin-left: 150px;
+            margin-bottom: -20px;
+        }
+
+        .pagar .detalle {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .sin {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    {% for fila in bill %}
+        <h1 class="title">FACTURA N.{{ fila.number_bill }}</h1>
+        <div class="date"><strong>Fecha: </strong>{{ fila.date }}</div>
+    {% endfor %}
+    <div class="duedate"><strong>Vence: </strong>{{ fecha }}</div>
+    <div class="header">
+        <img src="../static/img/logoTyuon.png" alt="Logo de la empresa" class="logo">
+    </div>
+    <div class="info-section empresa">
+        <p><strong>Empresa:</strong> Tryuon</p>
+        <p><strong>RNC:</strong> 1-32-23615-7 <strong>Tel.:</strong> 849-282-5457</p>
+        <p><strong>Email:</strong> Tryuon@gmail.com</p>s
+    </div>
+    <div class="info-section cliente">
+        {% for fila in bill %}
+            <p><strong>Cliente:</strong> {{ fila.customer }}</p>
+            <p><strong>RNC:</strong> {{ fila.rnc_client_bill }}</p>
+            <p><strong>Ubicación:</strong> {{ fila.ubicacion }}</p>
+            <p><strong>Contacto:</strong> {{ fila.contacto }}</p>
+        {% endfor %}
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio Unit.</th>
+                <th>ITBIS</th>
+                <th>Subtotal Produc.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila_detalle in detail %}
+                <tr>
+                    <td>{{ fila_detalle.decrition }}</td>
+                    <td>{{ fila_detalle.amount }}</td>
+                    <td>{{ fila_detalle.price }}$</td>
+                    <td>{{ fila_detalle.itbis }}%</td>
+                    <td>{{ fila_detalle.amount * fila_detalle.price }}$</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="sin" colspan="5"><hr></td>
+            </tr>
+
+            <tr class="pagar">
+                <td class="sin" colspan="3"></td>
+                <th class="detalle">SubTotal</th>
+                <td class="detalle">{{ subtotal }}$</td>
+            </tr>
+
+            <tr class="pagar">
+                <td class="sin" colspan="3"></td>
+                <th class="detalle">Itbis</th>
+                <td class="detalle">{{ total_itbis }}$</td>
+            </tr>
+
+            {% for fila in bill %}
+                {% if fila.5 == "Efectivo" %}
+                    <tr class="pagar">
+                        <td class="sin" colspan="3"></td>
+                        <th class="detalle">Efectivo</th>
+                        <td class="detalle">{{ fila.discount }}</td>
+                    </tr>
+                    <tr class="pagar">
+                        <td class="sin" colspan="3"></td>
+                        <th class="detalle">Cambio</th>
+                        <td class="detalle">{{ fila.Itbisextra }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+
+            {% for fila in bill %}
+                {% if fila.4 != 0 %}
+                    <tr class="pagar">
+                        <td class="sin" colspan="3"></td>
+                        <th class="detalle">Descuento</th>
+                        <td class="detalle">{{ fila.4 }}%</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+
+            {% for fila in bill %}
+                {% if fila.14 != 0 %}
+                    <tr class="pagar">
+                        <td class="sin" colspan="3"></td>
+                        <th class="detalle">ITBIS - Extra</th>
+                        <td class="detalle">{{ fila.14 }}%</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+
+
+            <tr class="pagar">
+                <td class="sin" colspan="3"></td>
+                <th class="detalle">Total</th>
+                <td class="detalle">{{ total_general }}$</td>
+            </tr>
+        </tfoot>
+    </table>  
+    <img class="img sello" src="..static/img/sey-removebg-preview.png" alt="sello"> 
+    <img class="img firma" src="../static/img/firma-removebg-preview.png" alt="firma">
+    <p class="derecha">RECIBIDO POR:</p>
+    <p class="izquierda">REALIZADO POR:</p>
+    <h2 class="nota">Nota:</h2>    
+    <p>
+        Queríamos expresar nuestro agradecimiento por tu reciente visita a nuestra tienda de productos tecnológicos. Fue un placer atenderte y esperamos que hayas encontrado lo que buscabas.
+
+        Si necesitas alguna asistencia adicional con tus productos o tienes alguna pregunta, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte en cualquier momento.
+            
+        Esperamos verte nuevamente pronto.
+            
+        ¡Gracias por confiar en nosotros!
+    </p>
+</body>
+</html>
